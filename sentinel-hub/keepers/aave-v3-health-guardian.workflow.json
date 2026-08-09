@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "exportedAt": "2026-08-10T00:00:00.000Z",
+  "workflow": {
+    "name": "Aave V3 Health Guardian",
+    "description": "Autonomous health factor monitor and debt repayer for Aave V3 positions. Called by Sentry Agents via MCP. Priced at $0.05 per call — settled via x402 (Base USDC) or MPP (Tempo USDC.e)."
+  },
+  "nodes": [
+    {
+      "id": "trigger",
+      "type": "trigger",
+      "position": { "x": 0, "y": 250 },
+      "data": {
+        "type": "trigger",
+        "label": "Sentry Call",
+        "config": {
+          "triggerType": "Manual"
+        }
+      }
+    },
+    {
+      "id": "aave-read",
+      "type": "action",
+      "position": { "x": 280, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Get Aave Position",
+        "config": {
+          "actionType": "aave-v3/get-user-account-data",
+          "network": "{{@trigger:Sentry Call.chain_id}}",
+          "user": "{{@trigger:Sentry Call.wallet_address}}"
+        }
+      }
+    },
+    {
+      "id": "hf-math",
+      "type": "action",
+      "position": { "x": 560, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Normalize Health Factor",
+        "config": {
+          "actionType": "math/divide",
+          "valueA": "{{@aave-read:Get Aave Position.healthFactor}}",
+          "valueB": "1000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "condition",
+      "type": "action",
+      "position": { "x": 840, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Is Critical?",
+        "config": {
+          "actionType": "Condition",
+          "condition": "{{@hf-math:Normalize Health Factor.result}} < 1.3"
+        }
+      }
+    },
+    {
+      "id": "aave-repay",
+      "type": "action",
+      "position": { "x": 1120, "y": 100 },
+      "data": {
+        "type": "action",
+        "label": "Repay Aave Debt",
+        "config": {
+          "actionType": "aave-v3/repay",
+          "network": "{{@trigger:Sentry Call.chain_id}}",
+          "asset": "{{@trigger:Sentry Call.asset_to_repay}}",
+          "amount": "{{@trigger:Sentry Call.repay_amount_wei}}",
+          "interestRateMode": "2",
+          "onBehalfOf": "{{@trigger:Sentry Call.wallet_address}}"
+        }
+      }
+    },
+    {
+      "id": "discord-repay",
+      "type": "action",
+      "position": { "x": 1400, "y": 100 },
+      "data": {
+        "type": "action",
+        "label": "Alert Repay Executed",
+        "config": {
+          "actionType": "discord/send-message",
+          "message": "🚨 GUARDIAN EXECUTED | Wallet: {{@trigger:Sentry Call.wallet_address}} | Tx: {{@aave-repay:Repay Aave Debt.transactionHash}} | HF was: {{@hf-math:Normalize Health Factor.result}}"
+        }
+      }
+    },
+    {
+      "id": "discord-safe",
+      "type": "action",
+      "position": { "x": 1120, "y": 400 },
+      "data": {
+        "type": "action",
+        "label": "Report Position Safe",
+        "config": {
+          "actionType": "discord/send-message",
+          "message": "✅ Position healthy | Wallet: {{@trigger:Sentry Call.wallet_address}} | HF: {{@hf-math:Normalize Health Factor.result}} | No action taken."
+        }
+      }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "trigger",   "target": "aave-read" },
+    { "id": "e2", "source": "aave-read",  "target": "hf-math" },
+    { "id": "e3", "source": "hf-math",    "target": "condition" },
+    { "id": "e4", "source": "condition",  "target": "aave-repay",    "sourceHandle": "true",  "type": "animated" },
+    { "id": "e5", "source": "condition",  "target": "discord-safe",  "sourceHandle": "false", "type": "animated" },
+    { "id": "e6", "source": "aave-repay", "target": "discord-repay" }
+  ],
+  "integrationBindings": []
+}

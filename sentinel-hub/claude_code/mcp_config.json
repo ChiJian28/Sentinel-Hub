@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "keeperhub": {
+      "command": "npx",
+      "args": ["-y", "@keeperhub/mcp-server"],
+      "env": {
+        "KEEPERHUB_API_KEY": "${KEEPERHUB_API_KEY}"
+      }
+    }
+  }
+}

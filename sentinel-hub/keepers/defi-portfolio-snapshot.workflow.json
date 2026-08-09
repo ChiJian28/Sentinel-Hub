@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "exportedAt": "2026-08-10T00:00:00.000Z",
+  "workflow": {
+    "name": "DeFi Portfolio Snapshot",
+    "description": "Cheap multi-protocol read: snapshots an address across Aave V3, Lido stETH, and Chainlink ETH/USD price. Used by Sentry Agents as a low-cost pre-check before dispatching expensive Guardian Keepers. Priced at $0.02 per call."
+  },
+  "nodes": [
+    {
+      "id": "trigger",
+      "type": "trigger",
+      "position": { "x": 0, "y": 300 },
+      "data": {
+        "type": "trigger",
+        "label": "Sentry Call",
+        "config": {
+          "triggerType": "Manual"
+        }
+      }
+    },
+    {
+      "id": "aave-snapshot",
+      "type": "action",
+      "position": { "x": 280, "y": 100 },
+      "data": {
+        "type": "action",
+        "label": "Aave Account Data",
+        "config": {
+          "actionType": "aave-v3/get-user-account-data",
+          "network": "{{@trigger:Sentry Call.chain_id}}",
+          "user": "{{@trigger:Sentry Call.wallet_address}}"
+        }
+      }
+    },
+    {
+      "id": "lido-balance",
+      "type": "action",
+      "position": { "x": 280, "y": 300 },
+      "data": {
+        "type": "action",
+        "label": "Lido stETH Balance",
+        "config": {
+          "actionType": "lido/get-steth-balance",
+          "network": "{{@trigger:Sentry Call.chain_id}}",
+          "address": "{{@trigger:Sentry Call.wallet_address}}"
+        }
+      }
+    },
+    {
+      "id": "eth-price",
+      "type": "action",
+      "position": { "x": 280, "y": 500 },
+      "data": {
+        "type": "action",
+        "label": "ETH USD Price",
+        "config": {
+          "actionType": "chainlink/get-latest-price",
+          "network": "{{@trigger:Sentry Call.chain_id}}",
+          "priceFeed": "{{@trigger:Sentry Call.eth_usd_feed}}"
+        }
+      }
+    },
+    {
+      "id": "hf-normalize",
+      "type": "action",
+      "position": { "x": 560, "y": 100 },
+      "data": {
+        "type": "action",
+        "label": "Normalize HF",
+        "config": {
+          "actionType": "math/divide",
+          "valueA": "{{@aave-snapshot:Aave Account Data.healthFactor}}",
+          "valueB": "1000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "price-normalize",
+      "type": "action",
+      "position": { "x": 560, "y": 500 },
+      "data": {
+        "type": "action",
+        "label": "Normalize ETH Price",
+        "config": {
+          "actionType": "math/divide",
+          "valueA": "{{@eth-price:ETH USD Price.answer}}",
+          "valueB": "100000000"
+        }
+      }
+    },
+    {
+      "id": "assemble",
+      "type": "action",
+      "position": { "x": 840, "y": 300 },
+      "data": {
+        "type": "action",
+        "label": "Assemble Snapshot",
+        "config": {
+          "actionType": "code/run",
+          "code": "return { healthFactor: parseFloat('{{@hf-normalize:Normalize HF.result}}'), stETHBalanceWei: '{{@lido-balance:Lido stETH Balance.balance}}', ethPriceUSD: parseFloat('{{@price-normalize:Normalize ETH Price.result}}'), totalCollateralBase: '{{@aave-snapshot:Aave Account Data.totalCollateralBase}}', totalDebtBase: '{{@aave-snapshot:Aave Account Data.totalDebtBase}}', availableBorrowsBase: '{{@aave-snapshot:Aave Account Data.availableBorrowsBase}}', timestamp: new Date().toISOString() };"
+        }
+      }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "trigger",        "target": "aave-snapshot" },
+    { "id": "e2", "source": "trigger",        "target": "lido-balance" },
+    { "id": "e3", "source": "trigger",        "target": "eth-price" },
+    { "id": "e4", "source": "aave-snapshot",  "target": "hf-normalize" },
+    { "id": "e5", "source": "eth-price",      "target": "price-normalize" },
+    { "id": "e6", "source": "hf-normalize",   "target": "assemble" },
+    { "id": "e7", "source": "lido-balance",   "target": "assemble" },
+    { "id": "e8", "source": "price-normalize","target": "assemble" }
+  ],
+  "integrationBindings": []
+}

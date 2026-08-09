@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "exportedAt": "2026-08-10T00:00:00.000Z",
+  "workflow": {
+    "name": "Chainlink Price Sentinel",
+    "description": "Reads any Chainlink price feed and fires a Discord alert if a price threshold is breached. Called by Sentry Agents via MCP. Priced at $0.03 per call."
+  },
+  "nodes": [
+    {
+      "id": "trigger",
+      "type": "trigger",
+      "position": { "x": 0, "y": 250 },
+      "data": {
+        "type": "trigger",
+        "label": "Sentry Call",
+        "config": {
+          "triggerType": "Manual"
+        }
+      }
+    },
+    {
+      "id": "cl-price",
+      "type": "action",
+      "position": { "x": 280, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Get Chainlink Price",
+        "config": {
+          "actionType": "chainlink/get-latest-price",
+          "network": "{{@trigger:Sentry Call.chain_id}}",
+          "priceFeed": "{{@trigger:Sentry Call.price_feed_address}}"
+        }
+      }
+    },
+    {
+      "id": "price-math",
+      "type": "action",
+      "position": { "x": 560, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Normalize Price",
+        "config": {
+          "actionType": "math/divide",
+          "valueA": "{{@cl-price:Get Chainlink Price.answer}}",
+          "valueB": "100000000"
+        }
+      }
+    },
+    {
+      "id": "condition-below",
+      "type": "action",
+      "position": { "x": 840, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Price Breached?",
+        "config": {
+          "actionType": "Condition",
+          "condition": "{{@price-math:Normalize Price.result}} < {{@trigger:Sentry Call.breach_threshold_usd}}"
+        }
+      }
+    },
+    {
+      "id": "discord-breach",
+      "type": "action",
+      "position": { "x": 1120, "y": 100 },
+      "data": {
+        "type": "action",
+        "label": "Alert Price Breach",
+        "config": {
+          "actionType": "discord/send-message",
+          "message": "🔴 PRICE BREACH | Feed: {{@trigger:Sentry Call.price_feed_address}} | Current: ${{@price-math:Normalize Price.result}} | Threshold: ${{@trigger:Sentry Call.breach_threshold_usd}} | Updated: {{@cl-price:Get Chainlink Price.updatedAt}}"
+        }
+      }
+    },
+    {
+      "id": "discord-ok",
+      "type": "action",
+      "position": { "x": 1120, "y": 400 },
+      "data": {
+        "type": "action",
+        "label": "Report Price OK",
+        "config": {
+          "actionType": "discord/send-message",
+          "message": "✅ Price normal | Current: ${{@price-math:Normalize Price.result}} | Threshold: ${{@trigger:Sentry Call.breach_threshold_usd}}"
+        }
+      }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "trigger",        "target": "cl-price" },
+    { "id": "e2", "source": "cl-price",        "target": "price-math" },
+    { "id": "e3", "source": "price-math",      "target": "condition-below" },
+    { "id": "e4", "source": "condition-below", "target": "discord-breach", "sourceHandle": "true",  "type": "animated" },
+    { "id": "e5", "source": "condition-below", "target": "discord-ok",     "sourceHandle": "false", "type": "animated" }
+  ],
+  "integrationBindings": []
+}
