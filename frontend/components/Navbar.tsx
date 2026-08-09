@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Shield, Activity, Cpu, Database, Wallet, Sparkles, ChevronDown } from 'lucide-react';
+import { Activity, Cpu, Database, Wallet, Sparkles } from 'lucide-react';
 import { useSentinelStore } from '@/store/useSentinelStore';
 import { useHealthQuery } from '@/hooks/useApi';
 
@@ -21,10 +21,10 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full bg-slate-950/85 backdrop-blur-xl border-b border-white/10 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-17 flex items-center justify-between gap-4">
-        {/* Brand Logo & Tag */}
+        {/* Brand Logo (icon.svg) & Tag */}
         <div className="flex items-center space-x-3 cursor-pointer shrink-0" onClick={() => setActiveTab('overview')}>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center shadow-glow">
-            <Shield className="w-5 h-5 text-slate-950 stroke-[2.5]" />
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-glow border border-teal-500/30 flex items-center justify-center bg-slate-950">
+            <img src="/icon.svg" alt="Sentinel-Hub Logo" className="w-full h-full object-cover scale-110" />
           </div>
           <div className="flex items-center space-x-2">
             <span className="font-bold text-lg tracking-tight text-white font-sans">Sentinel-Hub</span>
