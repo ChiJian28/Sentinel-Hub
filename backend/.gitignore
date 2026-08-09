@@ -1,0 +1,52 @@
+# ==============================================================================
+# SECURITY & DEPLOYMENT GITIGNORE — BACKEND
+# ==============================================================================
+
+# Environment files (CRITICAL: NEVER COMMIT REAL SECRETS)
+.env
+.env.*
+!.env.example
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local database & SQLite files
+*.db
+*.sqlite
+*.sqlite3
+
+# Node & package artifacts
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.idea/
+
+# Keys & Certificates
+*.pem
+*.key
+*.crt
+*.keystore
+*.p12
