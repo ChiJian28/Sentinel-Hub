@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    background-color: #0b0f17;
+    color: #f8fafc;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* DecisionX Ticker Bar Animations */
+@keyframes dxpulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
+}
+
+.dx-bar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #0d9488;
+  animation: dxpulse 2s infinite ease-in-out;
+}
+
+@keyframes dxtick {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.dx-bar-ticker {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: dxtick 28s linear infinite;
+}
+
+.dx-bar-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* DecisionX Shared Glass Cards */
+.dx-card {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dx-card:hover {
+  border-color: rgba(13, 148, 136, 0.35);
+  box-shadow: 0 10px 30px -5px rgba(13, 148, 136, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* DecisionX Hero Card Gradient */
+.dx-hero-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(13, 148, 136, 0.12) 50%, rgba(15, 23, 42, 0.95) 100%);
+  border: 1px solid rgba(13, 148, 136, 0.25);
+  box-shadow: 0 20px 50px -10px rgba(13, 148, 136, 0.15);
+  border-radius: 20px;
+}
+
+/* Icon Box */
+.dx-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
