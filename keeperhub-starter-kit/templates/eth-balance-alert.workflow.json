@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "exportedAt": "2026-08-10T00:00:00.000Z",
+  "workflow": {
+    "name": "ETH Balance Alert",
+    "description": "Check an ETH balance on Sepolia every 10 minutes. Send a Discord alert if it drops below 0.1 ETH. A great first workflow for new KeeperHub builders."
+  },
+  "nodes": [
+    {
+      "id": "trigger",
+      "type": "trigger",
+      "position": { "x": 0, "y": 250 },
+      "data": {
+        "type": "trigger",
+        "label": "Every 10 Minutes",
+        "config": {
+          "triggerType": "Schedule",
+          "scheduleCron": "*/10 * * * *"
+        }
+      }
+    },
+    {
+      "id": "check-balance",
+      "type": "action",
+      "position": { "x": 280, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Check ETH Balance",
+        "config": {
+          "actionType": "web3/check-balance",
+          "network": "11155111",
+          "address": "0x0000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "normalize",
+      "type": "action",
+      "position": { "x": 560, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "ETH to Human",
+        "config": {
+          "actionType": "math/divide",
+          "valueA": "{{@check-balance:Check ETH Balance.balance}}",
+          "valueB": "1000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "condition-low",
+      "type": "action",
+      "position": { "x": 840, "y": 250 },
+      "data": {
+        "type": "action",
+        "label": "Balance < 0.1 ETH?",
+        "config": {
+          "actionType": "Condition",
+          "condition": "{{@normalize:ETH to Human.result}} < 0.1"
+        }
+      }
+    },
+    {
+      "id": "discord-alert",
+      "type": "action",
+      "position": { "x": 1120, "y": 100 },
+      "data": {
+        "type": "action",
+        "label": "Low Balance Alert",
+        "config": {
+          "actionType": "discord/send-message",
+          "message": "⚠️ Low ETH balance: {{@normalize:ETH to Human.result}} ETH on Sepolia"
+        }
+      }
+    },
+    {
+      "id": "discord-ok",
+      "type": "action",
+      "position": { "x": 1120, "y": 400 },
+      "data": {
+        "type": "action",
+        "label": "Balance OK",
+        "config": {
+          "actionType": "discord/send-message",
+          "message": "✅ ETH balance healthy: {{@normalize:ETH to Human.result}} ETH on Sepolia"
+        }
+      }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "source": "trigger",       "target": "check-balance" },
+    { "id": "e2", "source": "check-balance",  "target": "normalize" },
+    { "id": "e3", "source": "normalize",      "target": "condition-low" },
+    { "id": "e4", "source": "condition-low",  "target": "discord-alert", "sourceHandle": "true",  "type": "animated" },
+    { "id": "e5", "source": "condition-low",  "target": "discord-ok",    "sourceHandle": "false", "type": "animated" }
+  ],
+  "integrationBindings": []
+}
