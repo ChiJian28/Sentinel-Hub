@@ -2,10 +2,9 @@
 
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider, createConfig, http } from 'wagmi';
+import { WagmiProvider, http } from 'wagmi';
 import { sepolia, base } from 'wagmi/chains';
-import { injected } from 'wagmi/connectors';
-import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, getDefaultConfig, darkTheme } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 
 // Custom Tempo Chain definition for MPP payment rail
@@ -22,9 +21,17 @@ const tempoChain = {
   testnet: true,
 };
 
-const wagmiConfig = createConfig({
+// Valid WalletConnect Cloud Project ID with domain metadata binding
+const WALLET_CONNECT_PROJECT_ID =
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'c4f79cc821944d9680842e34466bfb00';
+
+const wagmiConfig = getDefaultConfig({
+  appName: 'Sentinel-Hub',
+  appDescription: 'Autonomous Agentic Execution Economy on KeeperHub',
+  appUrl: 'https://sentinel-hub-keeper.vercel.app',
+  appIcon: 'https://sentinel-hub-keeper.vercel.app/icon.svg',
+  projectId: WALLET_CONNECT_PROJECT_ID,
   chains: [sepolia, base, tempoChain as any],
-  connectors: [injected()],
   transports: {
     [sepolia.id]: http('https://rpc.ankr.com/eth_sepolia'),
     [base.id]: http('https://mainnet.base.org'),
@@ -52,8 +59,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={darkTheme({
-            accentColor: '#10b981',
-            accentColorForeground: '#09090b',
+            accentColor: '#0d9488',
+            accentColorForeground: '#ffffff',
             borderRadius: 'medium',
             fontStack: 'system',
             overlayBlur: 'small',
