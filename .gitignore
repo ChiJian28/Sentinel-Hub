@@ -13,6 +13,7 @@ build/
 *.db
 *.sqlite
 
-# Demo video script files (local only)
+# Demo video script files and DoraHacks submissions (local only)
 for_llm_script_p1.txt
 script.txt
+desc.md
