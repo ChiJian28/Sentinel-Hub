@@ -156,7 +156,7 @@ export function OverviewSection() {
               TEE Hardware Enclave
             </div>
             <p className="text-xs text-slate-400 mt-1 font-mono truncate">
-              {walletStatus?.turnkey_sub_org_id || 'suborg_turnkey_tee'}
+              {walletStatus?.turnkey_suborg_id || 'suborg_turnkey_tee'}
             </p>
           </div>
 

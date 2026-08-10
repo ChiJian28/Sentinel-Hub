@@ -41,17 +41,17 @@ export function WalletSecurityPanel() {
           <div className="space-y-3 text-xs">
             <div className="p-3 rounded-xl bg-zinc-950 border border-white/5 space-y-1">
               <span className="text-zinc-400 font-mono">Agentic Wallet Address</span>
-              <p className="font-mono text-white break-all">{walletStatus?.wallet_address || '0x7d8a9f4c3b2a1e0d9c8b7a6f5e4d3c2b1a0f9e8d'}</p>
+              <p className="font-mono text-white break-all">{walletStatus?.agent_wallet_address || '0x7d8a9f4c3b2a1e0d9c8b7a6f5e4d3c2b1a0f9e8d'}</p>
             </div>
 
             <div className="p-3 rounded-xl bg-zinc-950 border border-white/5 space-y-1">
               <span className="text-zinc-400 font-mono">Turnkey Sub-Org ID</span>
-              <p className="font-mono text-emerald-400">{walletStatus?.turnkey_sub_org_id || 'suborg_turnkey_tee_enclave'}</p>
+              <p className="font-mono text-emerald-400">{walletStatus?.turnkey_suborg_id || 'suborg_turnkey_tee_enclave'}</p>
             </div>
 
             <div className="p-3 rounded-xl bg-zinc-950 border border-white/5 space-y-1">
               <span className="text-zinc-400 font-mono">Custody Model</span>
-              <p className="text-zinc-200">{walletStatus?.custody_type || 'Turnkey TEE Hardware Enclave (Non-Custodial)'}</p>
+              <p className="text-zinc-200">{(walletStatus as any)?.custody_type || 'Turnkey TEE Hardware Enclave (Non-Custodial)'}</p>
             </div>
           </div>
         </div>
