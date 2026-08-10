@@ -3,14 +3,6 @@
 > **The Autonomous Agentic Execution Economy on KeeperHub**  
 > *KeeperHub Agent Hackathon 2026 Submission*
 
-[![KeeperHub Hackathon](https://img.shields.io/badge/KeeperHub-Hackathon%202026-purple.svg)](https://keeperhub.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Next.js 14](https://img.shields.io/badge/Next.js-14.2-black.svg)](https://nextjs.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com)
-[![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini%203.1-4285F4.svg)](https://aistudio.google.com)
-
----
-
 ## Executive Summary & Architectural Vision
 
 Most AI agents today can **think** about on-chain decisions, but hit a wall when executing transactions: stuck nonces, unhandled gas spikes, lack of auditability, and no agent-to-agent payment rails.
@@ -20,16 +12,14 @@ Sentry Agents monitor DeFi positions (Aave V3, Chainlink oracles, Lido) and **au
 
 Rather than treating KeeperHub as a passive tool, Sentinel-Hub demonstrates an ecosystem where AI agents discover, purchase, and execute on-chain automation workflows with cryptographic auditability, backed by a **DecisionX-inspired Decision AI** Web3 UI.
 
----
 
 ## Dual-Track Submission Strategy
 
 1. **Grand Prize Track**: **Sentinel-Hub** — Full autonomous Sentry Agent monitoring loop + Marketplace Keepers + x402/MPP micropayment routing + Turnkey TEE wallet security + DecisionX Web3 Frontend.
 2. **$1,000 Best Onboarding UX Bounty**: **KeeperHub Starter Kit** — Includes a 60-second interactive installer (`setup.sh`), zero-dependency starter templates, and an honest 8-point friction teardown guide (`keeperhub-starter-kit/docs/where-i-got-stuck.md`).
 
----
 
-## 🔗 Deployed Networks, Contracts & Live Execution Hashes
+## Deployed Networks, Contracts & Live Execution Hashes
 
 ### 1. Deployed Smart Contracts & Protocol Integrations
 | Network / Chain | Chain ID | Contract / Resource Name | Verified Address / RPC Endpoint |
@@ -50,7 +40,6 @@ The following workflows are actively registered and executable under user accoun
 | **Chainlink Price Sentinel** | `y6gy5t5ogwan7xgaolpws` | `POST /api/workflows/y6gy5t5ogwan7xgaolpws/execute` | `cka2kzuauv66vj8hscmi1` |
 | **Aave V3 Health Guardian** | `8grhbdzlnbkm0rdty2lpb` | `POST /api/workflows/8grhbdzlnbkm0rdty2lpb/execute` | `ng88dggc59p1gs0tqnm4y` |
 
----
 
 ## Tech Stack
 
@@ -69,7 +58,6 @@ The following workflows are actively registered and executable under user accoun
 | **Aave V3 Liquidity Protocol** | Sepolia Pool (`0x6Ae4...951`) | [`sentinel-hub/keepers/aave-v3-health-guardian.workflow.json`](file:///Users/chijian/Desktop/Keeper/sentinel-hub/keepers/aave-v3-health-guardian.workflow.json) — On-chain health factor checking and debt repayment. |
 | **Defensive Gas Cap Engine** | Custom Web3 Buffer Calculator | [`backend/app/services/gas_service.py`](file:///Users/chijian/Desktop/Keeper/backend/app/services/gas_service.py) — Dynamic +30% safety buffer capping and ~35% gas savings calculator. |
 
----
 
 ## Project Structure
 
@@ -130,7 +118,6 @@ The following workflows are actively registered and executable under user accoun
     └── templates/                       # Reusable workflow templates
 ```
 
----
 
 ## Quickstart & Operational Setup
 
@@ -199,7 +186,6 @@ chmod +x scripts/*.sh
 python sentinel_agent.py --once
 ```
 
----
 
 ## API Endpoint Overview
 
@@ -212,7 +198,6 @@ python sentinel_agent.py --once
 | `POST` | `/api/v1/sentry/cycle` | Execute complete Sentry Agent decision cycle with Gemini AI | `SentryCycleResponse` |
 | `GET` | `/api/v1/audit/logs/{run_id}` | Export verified on-chain execution audit trail | `AuditTrailLog` |
 
----
 
 ## The 5-Layer Decision AI Lifecycle
 
@@ -225,7 +210,6 @@ Sentinel-Hub executes with explicit cost-efficiency and intelligence:
 4. **Layer 4: Oracle Monitoring ($0.03)**: Calls `chainlink-price-sentinel` for oracle breach detection.
 5. **Layer 5: Learn & Audit**: Generates cryptographically verifiable audit trail (`kh run logs`) with executive AI summaries for judges.
 
----
 
 ## License
 MIT License. Built for the KeeperHub Hackathon 2026.
