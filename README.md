@@ -10,12 +10,12 @@ Most AI agents today can **think** about on-chain decisions, but hit a wall when
 **Sentinel-Hub** solves this by turning KeeperHub into an **autonomous agentic economy**. 
 Sentry Agents monitor DeFi positions (Aave V3, Chainlink oracles, Lido) and **autonomously pay and dispatch specialised Execution Keepers** published on the KeeperHub Marketplace via **x402 (Base USDC)** or **MPP (Tempo USDC.e)** micropayments.
 
-Rather than treating KeeperHub as a passive tool, Sentinel-Hub demonstrates an ecosystem where AI agents discover, purchase, and execute on-chain automation workflows with cryptographic auditability, backed by a **DecisionX-inspired Decision AI** Web3 UI.
+Rather than treating KeeperHub as a passive tool, Sentinel-Hub demonstrates an ecosystem where AI agents discover, purchase, and execute on-chain automation workflows with cryptographic auditability.
 
 
 ## Dual-Track Submission Strategy
 
-1. **Grand Prize Track**: **Sentinel-Hub** — Full autonomous Sentry Agent monitoring loop + Marketplace Keepers + x402/MPP micropayment routing + Turnkey TEE wallet security + DecisionX Web3 Frontend.
+1. **Grand Prize Track**: **Sentinel-Hub** — Full autonomous Sentry Agent monitoring loop + Marketplace Keepers + x402/MPP micropayment routing + Turnkey TEE wallet security + Web3 Frontend.
 2. **$1,000 Best Onboarding UX Bounty**: **KeeperHub Starter Kit** — Includes a 60-second interactive installer (`setup.sh`), zero-dependency starter templates, and an honest 8-point friction teardown guide (`keeperhub-starter-kit/docs/where-i-got-stuck.md`).
 
 
@@ -45,7 +45,7 @@ The following workflows are actively registered and executable on KeeperHub:
 
 | Layer / Technology | Core Framework / Tool | Code Location & Integration Purpose |
 |---|---|---|
-| **Frontend UI/UX System** | Next.js 14 (App Router), DecisionX UI Design, Tailwind CSS, Framer Motion | [`frontend/`](file:///Users/chijian/Desktop/Keeper/frontend) — DecisionX top ticker, Bento grid, 5-layer lifecycle console, glass panel cards. |
+| **Frontend UI/UX System** | Next.js 14 (App Router), Tailwind CSS, Framer Motion | [`frontend/`](file:///Users/chijian/Desktop/Keeper/frontend) — DecisionX top ticker, Bento grid, 5-layer lifecycle console, glass panel cards. |
 | **State & Data Management** | Zustand, TanStack Query v5, Axios | [`frontend/store/useSentinelStore.ts`](file:///Users/chijian/Desktop/Keeper/frontend/store/useSentinelStore.ts), [`frontend/hooks/useApi.ts`](file:///Users/chijian/Desktop/Keeper/frontend/hooks/useApi.ts) — Reactive UI state & API queries mapped to OpenAPI spec. |
 | **Web3 Wallet & Connectivity** | Wagmi v2, Viem, RainbowKit v2 | [`frontend/app/providers.tsx`](file:///Users/chijian/Desktop/Keeper/frontend/app/providers.tsx) — Non-custodial Web3 wallet connection for Sepolia, Base, & Tempo chains. |
 | **Backend API Gateway** | Python 3.10+, FastAPI, Pydantic v2, Uvicorn | [`backend/app/main.py`](file:///Users/chijian/Desktop/Keeper/backend/app/main.py) — Production REST API service layer with CORS & deployment probes. |
@@ -67,7 +67,7 @@ The following workflows are actively registered and executable on KeeperHub:
 ├── champion_solution.md                 # Complete Phase 7 Champion Blueprint
 ├── .env.example                         # Global environment variable template
 │
-├── frontend/                            # Next.js 14 App Router Frontend (DecisionX UI)
+├── frontend/                            # Next.js 14 App Router Frontend 
 │   ├── app/
 │   │   ├── page.tsx                     # Main dashboard page with animated tab views
 │   │   ├── layout.tsx                   # Root layout with metadata
@@ -151,7 +151,7 @@ Interactive API documentation:
 * Swagger UI: [http://localhost:8080/api/v1/docs](http://localhost:8080/api/v1/docs)
 * ReDoc UI: [http://localhost:8080/api/v1/redoc](http://localhost:8080/api/v1/redoc)
 
-### 4. Run Frontend Web UI (DecisionX Design)
+### 4. Run Frontend Web UI 
 ```bash
 cd frontend
 npm install
