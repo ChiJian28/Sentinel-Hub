@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from './providers';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sentinel-hub-keeper.vercel.app'),
@@ -52,6 +53,7 @@ export default function RootLayout({
       </head>
       <body className="bg-[#0b0f17] text-[#f8fafc] antialiased selection:bg-teal-500/20 selection:text-teal-400">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
