@@ -32,7 +32,7 @@ Rather than treating KeeperHub as a passive tool, Sentinel-Hub demonstrates an e
 | **Tempo Testnet** | `42431` | **MPP Micropayment Native Currency** | `USDC.e` (`https://rpc.testnet.tempo.xyz`) |
 
 ### 2. Live KeeperHub Registered Workflow Executions
-The following workflows are actively registered and executable under user account `Chijian Lim` (`chijianlim2004@gmail.com`) on KeeperHub:
+The following workflows are actively registered and executable on KeeperHub:
 
 | Workflow Name | KeeperHub Workflow ID | Executable API Endpoint | Verified Live Execution ID |
 |---|---|---|---|
